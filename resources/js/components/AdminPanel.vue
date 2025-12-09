@@ -11,7 +11,7 @@
         <AdminSidebar :user="user" :is-open="sidebarOpen" @close="toggleSidebar" />
 
         <!-- Main Content -->
-        <div class="main-content-wrapper lg:ml-[220px] transition-all duration-300">
+        <div class="main-content-wrapper lg:ml-[260px] transition-all duration-300">
             <!-- Admin Header - Fixed at top, outside content area -->
             <AdminHeader 
                 :page-title="currentPageTitle"
@@ -119,8 +119,8 @@ export default {
 
 @media (min-width: 1024px) {
     .main-content-wrapper {
-        margin-left: 220px;
-        width: calc(100% - 220px);
+        margin-left: 260px;
+        width: calc(100% - 260px);
     }
 }
 
