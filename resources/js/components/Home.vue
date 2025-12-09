@@ -95,7 +95,7 @@
                         class="stat-card"
                         :class="index % 2 === 0 ? 'fade-in-left' : 'fade-in-right'"
                     >
-                        <div :class="getStatGradient(index)" class="text-center p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:rotate-1 border-2 border-white">
+                        <div :class="getStatGradient(index)" class="text-center p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:rotate-1 border-2 border-white pulse-glow">
                             <div :class="getStatTextColor(index)" class="text-4xl md:text-5xl font-bold mb-2 counter-animate">{{ stat.value }}</div>
                             <div class="text-sm md:text-base text-white font-semibold">{{ stat.label }}</div>
                         </div>
@@ -122,7 +122,7 @@
                         class="lang-card"
                         :class="getAnimationClass(index)"
                     >
-                        <div :class="getLangGradient(index)" class="p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:rotate-1 border-2 border-white group">
+                        <div :class="getLangGradient(index)" class="p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:rotate-1 border-2 border-white group glow-purple">
                             <div class="text-6xl mb-4 text-center transform group-hover:scale-110 transition-transform duration-300">{{ lang.icon }}</div>
                             <h3 class="text-xl font-bold mb-2 text-center text-white group-hover:text-yellow-200 transition-colors">{{ lang.name }}</h3>
                             <p class="text-white text-sm text-center mb-4 opacity-90">{{ lang.description }}</p>
@@ -153,7 +153,7 @@
                         class="tech-card"
                         :class="getAnimationClass(index)"
                     >
-                        <div :class="getTechGradient(index)" class="p-6 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-2 border-2 border-white group">
+                        <div :class="getTechGradient(index)" class="p-6 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-2 border-2 border-white group glow-blue">
                             <div class="text-4xl mb-3 text-center transform group-hover:scale-125 transition-transform">{{ tech.icon }}</div>
                             <h3 class="text-lg font-bold text-center text-white group-hover:text-yellow-200 transition-colors">{{ tech.name }}</h3>
                             <p class="text-xs text-gray-800 text-center mt-2 bg-white bg-opacity-95 px-3 py-1.5 rounded-full inline-block font-semibold shadow-md hover:bg-opacity-100 transition-all">{{ tech.category }}</p>
@@ -1235,6 +1235,295 @@ export default {
 .aiml-card:nth-child(5) { transition-delay: 0.5s; }
 .aiml-card:nth-child(6) { transition-delay: 0.6s; }
 
+/* Additional Animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes floatReverse {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(20px);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(99, 102, 241, 0.8);
+    }
+}
+
+@keyframes rotate-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes bounce-slow {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes gradient-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes scale-in {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-left {
+    from {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Floating Animation Classes */
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+.float-reverse {
+    animation: floatReverse 3s ease-in-out infinite;
+}
+
+.pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.rotate-slow {
+    animation: rotate-slow 20s linear infinite;
+}
+
+.bounce-slow {
+    animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* Icon Animations */
+.lang-card .text-6xl,
+.tech-card .text-4xl,
+.devops-card .text-6xl,
+.aiml-card .text-6xl {
+    animation: float 4s ease-in-out infinite;
+}
+
+.lang-card:nth-child(even) .text-6xl,
+.tech-card:nth-child(even) .text-4xl,
+.devops-card:nth-child(even) .text-6xl,
+.aiml-card:nth-child(even) .text-6xl {
+    animation: floatReverse 4s ease-in-out infinite;
+}
+
+/* Card Hover Effects */
+.stat-card:hover {
+    animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+.feature-card:hover,
+.course-card:hover {
+    animation: bounce-slow 1s ease-in-out infinite;
+}
+
+/* Gradient Animation */
+.bg-gradient-animated {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+}
+
+/* Shimmer Effect */
+.shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Scale In Animation */
+.scale-in {
+    animation: scale-in 0.6s ease-out forwards;
+}
+
+/* Enhanced Hover Effects */
+.lang-card:hover,
+.tech-card:hover,
+.devops-card:hover,
+.aiml-card:hover,
+.course-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card:hover {
+    transform: scale(1.05) rotate(1deg);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px) rotate(1deg);
+}
+
+/* Glow Effects */
+.glow-blue {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    transition: box-shadow 0.3s ease;
+}
+
+.glow-blue:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+}
+
+.glow-purple {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+    transition: box-shadow 0.3s ease;
+}
+
+.glow-purple:hover {
+    box-shadow: 0 0 30px rgba(147, 51, 234, 0.8);
+}
+
+/* Parallax Effect */
+.parallax {
+    transition: transform 0.3s ease-out;
+}
+
+/* Staggered Fade In */
+.stagger-fade-in {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.stagger-fade-in:nth-child(1) { animation-delay: 0.1s; }
+.stagger-fade-in:nth-child(2) { animation-delay: 0.2s; }
+.stagger-fade-in:nth-child(3) { animation-delay: 0.3s; }
+.stagger-fade-in:nth-child(4) { animation-delay: 0.4s; }
+.stagger-fade-in:nth-child(5) { animation-delay: 0.5s; }
+.stagger-fade-in:nth-child(6) { animation-delay: 0.6s; }
+
+/* Button Animations */
+.hero-section button,
+.hero-section a {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section button::before,
+.hero-section a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.hero-section button:hover::before,
+.hero-section a:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Card Border Animation */
+.lang-card,
+.tech-card,
+.devops-card,
+.aiml-card,
+.course-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.lang-card::before,
+.tech-card::before,
+.devops-card::before,
+.aiml-card::before,
+.course-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s;
+    opacity: 0;
+}
+
+.lang-card:hover::before,
+.tech-card:hover::before,
+.devops-card:hover::before,
+.aiml-card:hover::before,
+.course-card:hover::before {
+    animation: shimmer 1s;
+    opacity: 1;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .hero-section {
@@ -1257,6 +1546,14 @@ export default {
     .fade-in-left,
     .fade-in-right {
         transform: translateY(20px);
+    }
+    
+    /* Reduce animations on mobile for performance */
+    .float-animation,
+    .float-reverse,
+    .pulse-glow,
+    .bounce-slow {
+        animation: none;
     }
 }
 </style>
