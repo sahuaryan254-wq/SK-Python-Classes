@@ -183,11 +183,13 @@ export default {
                     const settings = response.data.settings;
                     brandSettings.value = {
                         brand_name: settings.brand_name || 'SK Python Classes',
-                        brand_logo_url: settings.brand_logo ? `/storage/${settings.brand_logo}` : null
+                        brand_logo_url: settings.brand_logo_url || (settings.brand_logo ? `/storage/${settings.brand_logo}` : null)
                     };
                     
                     // Update favicon if available
-                    if (settings.favicon) {
+                    if (settings.favicon_url) {
+                        updateFavicon(settings.favicon_url);
+                    } else if (settings.favicon) {
                         updateFavicon(`/storage/${settings.favicon}`);
                     }
                 }

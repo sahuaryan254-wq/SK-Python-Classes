@@ -94,59 +94,12 @@
             </div>
         </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section py-16 bg-gray-800 text-white">
-            <div class="container mx-auto px-4">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl font-bold mb-4">Get In Touch</h2>
-                    <p class="text-gray-300">Have questions? We'd love to hear from you!</p>
-                </div>
-                <div class="max-w-md mx-auto">
-                    <form @submit.prevent="handleSubmit" class="space-y-4">
-                        <div>
-                            <input 
-                                v-model="form.name"
-                                type="text" 
-                                placeholder="Your Name" 
-                                class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <input 
-                                v-model="form.email"
-                                type="email" 
-                                placeholder="Your Email" 
-                                class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <textarea 
-                                v-model="form.message"
-                                placeholder="Your Message" 
-                                rows="4"
-                                class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            ></textarea>
-                        </div>
-                        <button 
-                            type="submit"
-                            class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-                        >
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-        
         <Footer />
     </div>
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import Header from './Header.vue';
 import Footer from './Footer.vue';
 
@@ -229,24 +182,9 @@ export default {
             }
         ]);
 
-        const form = reactive({
-            name: '',
-            email: '',
-            message: ''
-        });
-
-        const handleSubmit = () => {
-            alert(`Thank you ${form.name}! We will contact you soon at ${form.email}`);
-            form.name = '';
-            form.email = '';
-            form.message = '';
-        };
-
         return {
             courses,
-            features,
-            form,
-            handleSubmit
+            features
         };
     }
 };
