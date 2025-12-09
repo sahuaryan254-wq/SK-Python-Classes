@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandSettingsController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\UISettingsController;
+use App\Http\Controllers\StudentsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +33,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/api/admins/{id}', [AdminManagementController::class, 'update']);
     Route::put('/api/admins/{id}/password', [AdminManagementController::class, 'updatePassword']);
     Route::delete('/api/admins/{id}', [AdminManagementController::class, 'destroy']);
+    
+    // Students Management Routes
+    Route::get('/api/students', [StudentsController::class, 'index']);
+    Route::get('/api/students/{id}', [StudentsController::class, 'show']);
+    Route::post('/api/students', [StudentsController::class, 'store']);
+    Route::put('/api/students/{id}', [StudentsController::class, 'update']);
+    Route::delete('/api/students/{id}', [StudentsController::class, 'destroy']);
 });
 
 Route::get('/admin-panel', function () {
