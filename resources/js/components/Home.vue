@@ -127,7 +127,7 @@
                             <h3 class="text-xl font-bold mb-2 text-center text-white group-hover:text-yellow-200 transition-colors">{{ lang.name }}</h3>
                             <p class="text-white text-sm text-center mb-4 opacity-90">{{ lang.description }}</p>
                             <div class="flex items-center justify-center">
-                                <span class="text-xs px-3 py-1 rounded-full bg-white bg-opacity-30 text-white font-semibold backdrop-blur-sm">{{ lang.level }}</span>
+                                <span class="text-xs px-3 py-1.5 rounded-full bg-white bg-opacity-95 text-gray-800 font-semibold shadow-md hover:bg-opacity-100 transition-all">{{ lang.level }}</span>
                             </div>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                         <div :class="getTechGradient(index)" class="p-6 rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 transform hover:scale-110 hover:rotate-2 border-2 border-white group">
                             <div class="text-4xl mb-3 text-center transform group-hover:scale-125 transition-transform">{{ tech.icon }}</div>
                             <h3 class="text-lg font-bold text-center text-white group-hover:text-yellow-200 transition-colors">{{ tech.name }}</h3>
-                            <p class="text-xs text-white text-center mt-2 opacity-90 bg-white bg-opacity-20 px-2 py-1 rounded-full inline-block">{{ tech.category }}</p>
+                            <p class="text-xs text-gray-800 text-center mt-2 bg-white bg-opacity-95 px-3 py-1.5 rounded-full inline-block font-semibold shadow-md hover:bg-opacity-100 transition-all">{{ tech.category }}</p>
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@
                             <h3 class="text-xl font-bold mb-2 text-center text-white group-hover:text-yellow-200 transition-colors">{{ tool.name }}</h3>
                             <p class="text-white text-sm text-center mb-4 opacity-90">{{ tool.description }}</p>
                             <div class="flex items-center justify-center">
-                                <span class="text-xs px-3 py-1 rounded-full bg-white bg-opacity-30 text-white font-semibold backdrop-blur-sm">{{ tool.category }}</span>
+                                <span class="text-xs px-3 py-1.5 rounded-full bg-white bg-opacity-95 text-gray-800 font-semibold shadow-md hover:bg-opacity-100 transition-all">{{ tool.category }}</span>
                             </div>
                         </div>
                     </div>
@@ -217,7 +217,7 @@
                             <h3 class="text-2xl font-bold mb-3 text-center text-white group-hover:text-yellow-200 transition-colors">{{ topic.title }}</h3>
                             <p class="text-white text-sm text-center mb-4 opacity-90 leading-relaxed">{{ topic.description }}</p>
                             <div class="flex flex-wrap items-center justify-center gap-2">
-                                <span v-for="(tag, tagIndex) in topic.tags" :key="tagIndex" class="text-xs px-3 py-1 rounded-full bg-white bg-opacity-30 text-white font-semibold backdrop-blur-sm">
+                                <span v-for="(tag, tagIndex) in topic.tags" :key="tagIndex" class="text-xs px-3 py-1.5 rounded-full bg-white bg-opacity-95 text-gray-800 font-semibold shadow-md hover:bg-opacity-100 transition-all">
                                     {{ tag }}
                                 </span>
                             </div>
