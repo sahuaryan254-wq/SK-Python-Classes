@@ -11,6 +11,7 @@ import Enrollments from '../components/admin/Enrollments.vue';
 import Certificates from '../components/admin/Certificates.vue';
 import Payments from '../components/admin/Payments.vue';
 import Reports from '../components/admin/Reports.vue';
+import Queries from '../components/admin/Queries.vue';
 
 const routes = [
     {
@@ -67,6 +68,12 @@ const routes = [
                 meta: { title: 'Reports', subtitle: 'View reports and analytics' }
             },
             {
+                path: 'queries',
+                name: 'admin.queries',
+                component: Queries,
+                meta: { title: 'Query/Inquiry', subtitle: 'Manage all queries and inquiries' }
+            },
+            {
                 path: 'admin-management',
                 name: 'admin.management',
                 component: AdminManagement,
@@ -90,7 +97,15 @@ const routes = [
 
 const router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        // Always scroll to top when navigating to a new route
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return { top: 0, behavior: 'smooth' };
+        }
+    }
 });
 
 export default router;

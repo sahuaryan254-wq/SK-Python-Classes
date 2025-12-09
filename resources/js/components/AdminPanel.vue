@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import AdminSidebar from './AdminSidebar.vue';
@@ -72,6 +72,17 @@ export default {
             console.log('🔵 Header elements in DOM:', document.querySelectorAll('header').length);
             console.log('🔵 Admin header elements:', document.querySelectorAll('.admin-header, #admin-main-header').length);
             fetchUser();
+        });
+
+        // Scroll to top when route changes
+        watch(() => route.fullPath, () => {
+            // Scroll the main content area to top
+            const contentArea = document.querySelector('.main-content-area');
+            if (contentArea) {
+                contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            // Also scroll window to top as fallback
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         const fetchUser = async () => {

@@ -8,8 +8,25 @@ use App\Http\Controllers\UISettingsController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\LiveClassesController;
+use App\Http\Controllers\QueriesController;
 
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/inquiry', function () {
+    return view('welcome');
+});
+
+Route::get('/courses', function () {
+    return view('welcome');
+});
+
+Route::get('/about-us', function () {
+    return view('welcome');
+});
+
+Route::get('/contact', function () {
     return view('welcome');
 });
 
@@ -36,6 +53,13 @@ Route::post('/api/brand-settings', [BrandSettingsController::class, 'update'])->
 Route::get('/api/ui-settings', [UISettingsController::class, 'index'])->middleware('auth');
 Route::post('/api/ui-settings', [UISettingsController::class, 'update'])->middleware('auth');
 
+// Queries Routes (Public - no auth required for store)
+Route::post('/api/queries', [QueriesController::class, 'store']);
+
+// Courses Routes (Public - no auth required for viewing)
+Route::get('/api/courses', [CoursesController::class, 'index']);
+Route::get('/api/courses/{id}', [CoursesController::class, 'show']);
+
 // Admin Management Routes
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/api/admins', [AdminManagementController::class, 'index']);
@@ -53,9 +77,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/api/students/{id}/toggle-status', [StudentsController::class, 'toggleStatus']);
     Route::delete('/api/students/{id}', [StudentsController::class, 'destroy']);
     
-    // Courses Management Routes
-    Route::get('/api/courses', [CoursesController::class, 'index']);
-    Route::get('/api/courses/{id}', [CoursesController::class, 'show']);
+    // Courses Management Routes (Admin only for create/update/delete)
     Route::post('/api/courses', [CoursesController::class, 'store']);
     Route::put('/api/courses/{id}', [CoursesController::class, 'update']);
     Route::put('/api/courses/{id}/toggle-status', [CoursesController::class, 'toggleStatus']);
@@ -68,6 +90,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/api/live-classes/{id}', [LiveClassesController::class, 'update']);
     Route::put('/api/live-classes/{id}/status', [LiveClassesController::class, 'updateStatus']);
     Route::delete('/api/live-classes/{id}', [LiveClassesController::class, 'destroy']);
+    
+    // Queries Management Routes (Admin only)
+    Route::get('/api/queries', [QueriesController::class, 'index']);
+    Route::get('/api/queries/{id}', [QueriesController::class, 'show']);
+    Route::put('/api/queries/{id}/status', [QueriesController::class, 'updateStatus']);
+    Route::delete('/api/queries/{id}', [QueriesController::class, 'destroy']);
 });
 
 Route::get('/admin-panel', function () {

@@ -1,17 +1,33 @@
 <template>
     <div id="app">
-        <Home />
+        <router-view />
+        
+        <!-- WhatsApp Button - Show on all pages except admin panel -->
+        <WhatsAppButton v-if="!isAdminPanel" />
     </div>
 </template>
 
 <script>
-import Home from './Home.vue';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import WhatsAppButton from './WhatsAppButton.vue';
 
 export default {
     name: 'App',
     components: {
-        Home,
+        WhatsAppButton
     },
+    setup() {
+        const route = useRoute();
+        
+        const isAdminPanel = computed(() => {
+            return route.path.startsWith('/admin-panel');
+        });
+
+        return {
+            isAdminPanel
+        };
+    }
 };
 </script>
 
