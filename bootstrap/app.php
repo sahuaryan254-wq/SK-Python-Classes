@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
         
+        // Add security headers middleware to all web requests
+        $middleware->web(append: [
+            \App\Http\Middleware\SecurityHeadersMiddleware::class,
+        ]);
+        
         // Exclude login API from CSRF (if needed)
         // $middleware->validateCsrfTokens(except: []);
     })

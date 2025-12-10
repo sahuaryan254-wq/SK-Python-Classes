@@ -367,3 +367,5 @@ export default {
 .nav-item:nth-child(4) { animation-delay: 0.2s; }
 </style>
 
+
+
