@@ -149,8 +149,8 @@
     <div class="certificate-container">
         <div class="certificate">
             <div class="header">
-                @if($brandSettings && $brandSettings->brand_logo)
-                    <img src="{{ public_path('storage/' . $brandSettings->brand_logo) }}" alt="Logo" class="logo">
+                @if($brandSettings && $brandSettings->brand_logo && file_exists(storage_path('app/public/' . $brandSettings->brand_logo)))
+                    <img src="data:image/png;base64,{{ base64_encode(file_get_contents(storage_path('app/public/' . $brandSettings->brand_logo))) }}" alt="Logo" class="logo">
                 @endif
                 <div class="brand-name">{{ $brandSettings->brand_name ?? 'SK Python Classes' }}</div>
                 @if($brandSettings && $brandSettings->tagline)

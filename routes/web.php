@@ -126,10 +126,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 // Certificate Verification (Public)
-Route::get('/certificateverify/{certificateNumber}', [CertificatesController::class, 'verify'])->name('certificate.verify');
+Route::get('/api/certificates/verify/{certificateNumber}', [CertificatesController::class, 'verify']);
 Route::get('/certificateverify', function () {
     return view('welcome');
 })->name('certificate.verify.page');
+Route::get('/certificateverify/{certificateNumber}', function () {
+    return view('welcome');
+})->name('certificate.verify.number');
 
 Route::get('/admin-panel', function () {
     return view('admin-panel');
