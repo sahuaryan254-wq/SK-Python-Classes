@@ -21,7 +21,7 @@ export default {
         const route = useRoute();
         
         const isAdminPanel = computed(() => {
-            return route.path.startsWith('/admin-panel');
+            return route.path.startsWith('/admin-panel') || route.path.startsWith('/dashboard');
         });
 
         return {

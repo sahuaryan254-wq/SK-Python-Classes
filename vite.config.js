@@ -11,7 +11,8 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/login.js',
                 'resources/js/forgot-password.js',
-                'resources/js/admin-panel.js'
+                'resources/js/admin-panel.js',
+                'resources/js/student-dashboard.js'
             ],
             refresh: true,
         }),

@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Payment;
+use App\Models\Certificate;
+use App\Models\LiveClass;
+use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class StudentsController extends Controller
 {
@@ -222,6 +230,211 @@ class StudentsController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Student deleted successfully'
+        ]);
+    }
+
+    /**
+     * Get student dashboard data
+     */
+    public function dashboard()
+    {
+        $user = Auth::user();
+        
+        // Get enrolled courses count (courses with payments)
+        $enrolledCourses = Payment::where('user_id', $user->id)
+            ->where('status', 'paid')
+            ->distinct('course_id')
+            ->count('course_id');
+
+        // Get certificates count
+        $certificates = Certificate::where('user_id', $user->id)
+            ->where('status', 'active')
+            ->count();
+
+        // Get total payments count
+        $totalPayments = Payment::where('user_id', $user->id)->count();
+
+        // Get upcoming live classes (next 7 days)
+        $upcomingClasses = LiveClass::where('scheduled_date', '>=', Carbon::today())
+            ->where('scheduled_date', '<=', Carbon::today()->addDays(7))
+            ->where('status', 'active')
+            ->with('course')
+            ->orderBy('scheduled_date', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->limit(6)
+            ->get();
+
+        // Get recent payments (last 5)
+        $recentPayments = Payment::where('user_id', $user->id)
+            ->with('course')
+            ->orderBy('payment_date', 'desc')
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'stats' => [
+                'enrolledCourses' => $enrolledCourses,
+                'certificates' => $certificates,
+                'totalPayments' => $totalPayments,
+                'upcomingClasses' => $upcomingClasses->count()
+            ],
+            'upcomingClasses' => $upcomingClasses,
+            'recentPayments' => $recentPayments
+        ]);
+    }
+
+    /**
+     * Get student live classes
+     */
+    public function liveClasses()
+    {
+        $user = Auth::user();
+        
+        // Get all upcoming live classes
+        $liveClasses = LiveClass::where('scheduled_date', '>=', Carbon::today())
+            ->where('status', 'active')
+            ->with('course')
+            ->orderBy('scheduled_date', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'liveClasses' => $liveClasses
+        ]);
+    }
+
+    /**
+     * Get student payments
+     */
+    public function payments()
+    {
+        $user = Auth::user();
+        
+        $payments = Payment::where('user_id', $user->id)
+            ->with('course')
+            ->orderBy('payment_date', 'desc')
+            ->get();
+
+        $totalPaid = Payment::where('user_id', $user->id)
+            ->where('status', 'paid')
+            ->sum('amount');
+
+        $pendingAmount = Payment::where('user_id', $user->id)
+            ->where('status', 'pending')
+            ->sum('amount');
+
+        return response()->json([
+            'success' => true,
+            'payments' => $payments,
+            'stats' => [
+                'totalPaid' => $totalPaid,
+                'pendingAmount' => $pendingAmount,
+                'totalPayments' => $payments->count()
+            ]
+        ]);
+    }
+
+    /**
+     * Get student certificates
+     */
+    public function certificates()
+    {
+        $user = Auth::user();
+        
+        $certificates = Certificate::where('user_id', $user->id)
+            ->with('course')
+            ->orderBy('issue_date', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'certificates' => $certificates
+        ]);
+    }
+
+    /**
+     * Download student certificate
+     */
+    public function downloadCertificate($id)
+    {
+        $user = Auth::user();
+        
+        $certificate = Certificate::with(['user', 'course'])
+            ->where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$certificate) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Certificate not found'
+            ], 404);
+        }
+
+        if (!$certificate->certificate_pdf || !Storage::disk('public')->exists($certificate->certificate_pdf)) {
+            // Generate PDF if doesn't exist
+            $this->generateCertificatePDF($certificate);
+            $certificate->refresh();
+        }
+
+        return Storage::disk('public')->download($certificate->certificate_pdf, $certificate->certificate_number . '.pdf');
+    }
+
+    /**
+     * Generate certificate PDF
+     */
+    private function generateCertificatePDF($certificate)
+    {
+        $certificate->load(['user', 'course']);
+        $brandSettings = \App\Models\BrandSetting::first();
+
+        $data = [
+            'certificate' => $certificate,
+            'brandSettings' => $brandSettings,
+        ];
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('certificates.certificate-pdf', $data);
+        
+        // Save PDF
+        $filename = 'certificates/' . $certificate->certificate_number . '.pdf';
+        Storage::disk('public')->put($filename, $pdf->output());
+
+        $certificate->certificate_pdf = $filename;
+        $certificate->save();
+    }
+
+    /**
+     * View payment receipt (Student only - their own payments)
+     */
+    public function viewReceipt($id)
+    {
+        $user = Auth::user();
+        
+        $payment = Payment::with(['user', 'course'])
+            ->where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$payment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment not found'
+            ], 404);
+        }
+
+        $brandSettings = \App\Models\BrandSetting::first();
+
+        $html = \Illuminate\Support\Facades\View::make('emails.payment-receipt', [
+            'payment' => $payment,
+            'brandSettings' => $brandSettings
+        ])->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+            'payment' => $payment
         ]);
     }
 }

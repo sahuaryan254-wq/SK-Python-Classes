@@ -141,3 +141,22 @@ Route::get('/admin-panel', function () {
 Route::get('/admin-panel/{any}', function () {
     return view('admin-panel');
 })->where('any', '.*')->middleware(['auth', 'admin']);
+
+// Student Dashboard Routes
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth')->name('student.dashboard');
+
+Route::get('/dashboard/{any}', function () {
+    return view('dashboard');
+})->where('any', '.*')->middleware('auth');
+
+// Student API Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/api/student/dashboard', [StudentsController::class, 'dashboard']);
+    Route::get('/api/student/live-classes', [StudentsController::class, 'liveClasses']);
+    Route::get('/api/student/payments', [StudentsController::class, 'payments']);
+    Route::get('/api/student/certificates', [StudentsController::class, 'certificates']);
+    Route::get('/api/student/certificates/{id}/download', [StudentsController::class, 'downloadCertificate']);
+    Route::get('/api/student/payments/{id}/receipt', [StudentsController::class, 'viewReceipt']);
+});
