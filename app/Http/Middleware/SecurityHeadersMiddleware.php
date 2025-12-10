@@ -18,13 +18,15 @@ class SecurityHeadersMiddleware
         $response = $next($request);
 
         // Content Security Policy to block mixed content (HTTP scripts on HTTPS pages)
+        // Using 'upgrade-insecure-requests' to automatically upgrade HTTP to HTTPS
         $response->headers->set(
             'Content-Security-Policy',
+            "upgrade-insecure-requests; " .
             "default-src 'self' https:; " .
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; " .
             "style-src 'self' 'unsafe-inline' https:; " .
             "img-src 'self' data: https:; " .
-            "font-src 'self' https://fonts.bunny.net data:; " .
+            "font-src 'self' https://fonts.bunny.net https://fonts.googleapis.com data:; " .
             "connect-src 'self' https:; " .
             "frame-ancestors 'self'; " .
             "base-uri 'self'; " .
