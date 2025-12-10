@@ -4,6 +4,7 @@ import InquiryPage from '../components/InquiryPage.vue';
 import CoursesPage from '../components/CoursesPage.vue';
 import AboutUsPage from '../components/AboutUsPage.vue';
 import ContactPage from '../components/ContactPage.vue';
+import CertificateVerify from '../components/CertificateVerify.vue';
 
 const routes = [
     {
@@ -34,6 +35,18 @@ const routes = [
         name: 'contact',
         component: ContactPage,
         meta: { title: 'Contact Us - SK Python Classes' }
+    },
+    {
+        path: '/certificateverify',
+        name: 'certificate.verify',
+        component: CertificateVerify,
+        meta: { title: 'Verify Certificate - SK Python Classes' }
+    },
+    {
+        path: '/certificateverify/:certificateNumber',
+        name: 'certificate.verify.number',
+        component: CertificateVerify,
+        meta: { title: 'Verify Certificate - SK Python Classes' }
     }
 ];
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\LiveClassesController;
 use App\Http\Controllers\QueriesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\CertificatesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -113,7 +114,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/api/payments/{id}', [PaymentsController::class, 'update']);
     Route::put('/api/payments/{id}/status', [PaymentsController::class, 'updateStatus']);
     Route::delete('/api/payments/{id}', [PaymentsController::class, 'destroy']);
+    
+    // Certificates Routes (Admin only)
+    Route::get('/api/certificates', [CertificatesController::class, 'index']);
+    Route::get('/api/certificates/stats', [CertificatesController::class, 'stats']);
+    Route::get('/api/certificates/{id}', [CertificatesController::class, 'show']);
+    Route::get('/api/certificates/{id}/download', [CertificatesController::class, 'download']);
+    Route::post('/api/certificates', [CertificatesController::class, 'store']);
+    Route::put('/api/certificates/{id}', [CertificatesController::class, 'update']);
+    Route::delete('/api/certificates/{id}', [CertificatesController::class, 'destroy']);
 });
+
+// Certificate Verification (Public)
+Route::get('/certificateverify/{certificateNumber}', [CertificatesController::class, 'verify'])->name('certificate.verify');
+Route::get('/certificateverify', function () {
+    return view('welcome');
+})->name('certificate.verify.page');
 
 Route::get('/admin-panel', function () {
     return view('admin-panel');

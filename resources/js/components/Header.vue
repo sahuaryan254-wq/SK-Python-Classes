@@ -54,6 +54,13 @@
                         <span class="relative z-10">About Us</span>
                         <span class="nav-underline"></span>
                     </router-link>
+                    <router-link 
+                        to="/certificateverify" 
+                        class="nav-link relative px-3 xl:px-5 py-2 xl:py-2.5 text-xs xl:text-sm font-semibold text-gray-700 hover:text-blue-600 transition-all duration-300 rounded-lg xl:rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 group"
+                    >
+                        <span class="relative z-10">Verify Certificate</span>
+                        <span class="nav-underline"></span>
+                    </router-link>
                 </div>
 
                 <!-- CTA Buttons -->
@@ -145,6 +152,13 @@
                             class="mobile-nav-link px-4 sm:px-5 py-3 sm:py-3.5 text-sm sm:text-base font-semibold text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 rounded-lg sm:rounded-xl transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-[1.01] active:scale-[0.99] touch-manipulation"
                         >
                             <span class="relative z-10">About Us</span>
+                        </router-link>
+                        <router-link 
+                            to="/certificateverify" 
+                            @click="closeMobileMenu" 
+                            class="mobile-nav-link px-4 sm:px-5 py-3 sm:py-3.5 text-sm sm:text-base font-semibold text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-600 rounded-lg sm:rounded-xl transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-[1.01] active:scale-[0.99] touch-manipulation"
+                        >
+                            <span class="relative z-10">Verify Certificate</span>
                         </router-link>
                         <a 
                             href="/login" 

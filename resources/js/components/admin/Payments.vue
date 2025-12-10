@@ -869,13 +869,6 @@ export default {
                 if (response.data.success) {
                     await fetchPayments();
                     await fetchStats();
-                    // If status changed to paid, show success message
-                    if (newStatus === 'paid') {
-                        successMessage.value = 'Payment status updated to Paid. Receipt has been sent to student\'s email.';
-                        setTimeout(() => {
-                            successMessage.value = '';
-                        }, 5000);
-                    }
                 } else {
                     alert(response.data.message || 'Failed to update status');
                 }

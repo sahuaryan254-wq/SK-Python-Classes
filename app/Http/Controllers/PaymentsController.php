@@ -109,22 +109,10 @@ class PaymentsController extends Controller
             'notes' => $request->notes,
         ]);
 
-        $payment->load(['user', 'course']);
-
-        // Send receipt email if status is paid
-        if ($request->status === 'paid' && $payment->user && $payment->user->email) {
-            try {
-                Mail::to($payment->user->email)->send(new PaymentReceiptMail($payment));
-            } catch (\Exception $e) {
-                // Log error but don't fail the request
-                \Log::error('Failed to send receipt email: ' . $e->getMessage());
-            }
-        }
-
         return response()->json([
             'success' => true,
             'message' => 'Payment created successfully',
-            'payment' => $payment
+            'payment' => $payment->load(['user', 'course'])
         ], 201);
     }
 
@@ -153,7 +141,6 @@ class PaymentsController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $oldStatus = $payment->status;
         $payment->user_id = $request->user_id;
         $payment->course_id = $request->course_id;
         $payment->amount = $request->amount;
@@ -164,22 +151,10 @@ class PaymentsController extends Controller
         $payment->notes = $request->notes;
         $payment->save();
 
-        $payment->load(['user', 'course']);
-
-        // Send receipt email when status changes to paid
-        if ($request->status === 'paid' && $oldStatus !== 'paid' && $payment->user && $payment->user->email) {
-            try {
-                Mail::to($payment->user->email)->send(new PaymentReceiptMail($payment));
-            } catch (\Exception $e) {
-                // Log error but don't fail the request
-                \Log::error('Failed to send receipt email: ' . $e->getMessage());
-            }
-        }
-
         return response()->json([
             'success' => true,
             'message' => 'Payment updated successfully',
-            'payment' => $payment
+            'payment' => $payment->load(['user', 'course'])
         ]);
     }
 
@@ -201,19 +176,8 @@ class PaymentsController extends Controller
             'status' => 'required|in:pending,paid,failed,refunded',
         ]);
 
-        $oldStatus = $payment->status;
         $payment->status = $request->status;
         $payment->save();
-
-        // Send receipt email when status changes to paid
-        if ($request->status === 'paid' && $oldStatus !== 'paid' && $payment->user && $payment->user->email) {
-            try {
-                Mail::to($payment->user->email)->send(new PaymentReceiptMail($payment));
-            } catch (\Exception $e) {
-                // Log error but don't fail the request
-                \Log::error('Failed to send receipt email: ' . $e->getMessage());
-            }
-        }
 
         return response()->json([
             'success' => true,
