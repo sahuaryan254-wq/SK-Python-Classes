@@ -102,3 +102,5 @@ The `public/favicon.ico` file is empty. You need to:
 1. Replace it with a proper favicon file
 2. Or add a favicon link in your blade templates
 
+
+

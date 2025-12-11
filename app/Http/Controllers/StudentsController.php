@@ -25,6 +25,7 @@ class StudentsController extends Controller
     public function index()
     {
         $students = User::where('role', 'student')
+            ->with('batches')
             ->select('id', 'name', 'email', 'phone', 'date_of_birth', 'role', 'status', 'created_at')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -42,6 +43,7 @@ class StudentsController extends Controller
     {
         $student = User::where('role', 'student')
             ->where('id', $id)
+            ->with('batches')
             ->select('id', 'name', 'email', 'phone', 'date_of_birth', 'role', 'status', 'created_at', 'updated_at')
             ->first();
 
@@ -98,6 +100,11 @@ class StudentsController extends Controller
             'role' => 'student',
             'status' => 'active',
         ]);
+
+        // Attach batches if provided
+        if ($request->has('batch_ids') && is_array($request->batch_ids)) {
+            $student->batches()->sync($request->batch_ids);
+        }
 
         // Send email with password if email type was selected
         if ($request->password_type === 'email' && $generatedPassword) {

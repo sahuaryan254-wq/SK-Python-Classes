@@ -12,6 +12,7 @@ import Certificates from '../components/admin/Certificates.vue';
 import Payments from '../components/admin/Payments.vue';
 import Reports from '../components/admin/Reports.vue';
 import Queries from '../components/admin/Queries.vue';
+import Batches from '../components/admin/Batches.vue';
 
 const routes = [
     {
@@ -36,6 +37,12 @@ const routes = [
                 name: 'admin.courses',
                 component: Courses,
                 meta: { title: 'Courses', subtitle: 'Manage all courses' }
+            },
+            {
+                path: 'batches',
+                name: 'admin.batches',
+                component: Batches,
+                meta: { title: 'Batches', subtitle: 'Manage all batches' }
             },
             {
                 path: 'live-classes',

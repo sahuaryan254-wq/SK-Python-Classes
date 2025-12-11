@@ -12,6 +12,7 @@ use App\Http\Controllers\QueriesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\CertificatesController;
+use App\Http\Controllers\BatchController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -123,6 +124,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/api/certificates', [CertificatesController::class, 'store']);
     Route::put('/api/certificates/{id}', [CertificatesController::class, 'update']);
     Route::delete('/api/certificates/{id}', [CertificatesController::class, 'destroy']);
+    
+    // Batches Management Routes (Admin only)
+    Route::get('/api/batches', [BatchController::class, 'index']);
+    Route::get('/api/batches/active-courses', [BatchController::class, 'getActiveCourses']);
+    Route::get('/api/batches/{id}', [BatchController::class, 'show']);
+    Route::post('/api/batches', [BatchController::class, 'store']);
+    Route::put('/api/batches/{id}', [BatchController::class, 'update']);
+    Route::put('/api/batches/{id}/toggle-status', [BatchController::class, 'toggleStatus']);
+    Route::post('/api/batches/{id}/assign-students', [BatchController::class, 'assignStudents']);
+    Route::delete('/api/batches/{id}', [BatchController::class, 'destroy']);
 });
 
 // Certificate Verification (Public)

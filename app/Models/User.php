@@ -65,4 +65,13 @@ class User extends Authenticatable
     {
         return $this->role === 'student';
     }
+
+    /**
+     * Get the batches that belong to this user
+     */
+    public function batches()
+    {
+        return $this->belongsToMany(Batch::class, 'batch_user')
+            ->withTimestamps();
+    }
 }
